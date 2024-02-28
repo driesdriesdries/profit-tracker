@@ -16,9 +16,7 @@ if (!is_user_logged_in()) {
 
 // Start the Loop
 if (have_posts()) : ?>
-    <header>
-        <h1 class="page-title">Vakansie Yes Profit Calculator</h1>
-    </header>
+    
 
     <?php 
 // Initialize arrays to store the chart data

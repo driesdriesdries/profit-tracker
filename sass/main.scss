@@ -1,9 +1,12 @@
-.transaction-dashboard {
+.transaction-dashboard {   
     padding: 1rem;
     background-color: crimson;
     display: flex;
     justify-content: center;
-
+    h1 {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
     .container {
         display: flex;
         justify-content: center;
