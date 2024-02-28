@@ -1,20 +1,26 @@
+$bp-medium:56.25em; //900/16
+
 .transaction-dashboard {   
     padding: 1rem;
-    background-color: crimson;
+    background-color: tomato;
     display: flex;
     justify-content: center;
-    h1 {
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-    }
+
     .container {
         display: flex;
         justify-content: center;
+        width: 100%;
+        @media only screen and (max-width:$bp-medium) {
+            flex-direction: column;
+        }
 
         .left {
             background-color: white;
             width: 60%;
             padding: 1rem;
+            @media only screen and (max-width:$bp-medium) {
+                width: 100%;
+            }
 
             table {
                 width: 100%;
@@ -65,6 +71,9 @@
             background-color: white;
             width: 40%;
             padding: 3rem;
+            @media only screen and (max-width:$bp-medium) {
+                width: 100%;
+            }
         }
     }
 }
