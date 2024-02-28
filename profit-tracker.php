@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: Vakansie Yes Profit Tracker
- * Plugin URI: http://andriesbester.com/profit-tracker
+ * Plugin URI: https://github.com/driesdriesdries/profit-tracker
  * Description: Worst Case Paternoster
- * Version: 667
+ * Version: 69
  * Author: Andries Bester
- * Author URI: http://andriesbester.com
+ * Author URI: https://github.com/driesdriesdries/profit-tracker
  */
 
 // Function to register the custom post type
@@ -113,7 +113,7 @@ function profit_tracker_display_update_notice() {
 
     // Check if the plugin has been updated
     $previous_version = get_option('profit_tracker_version');
-    $current_version = '666'; // Update this with the new version number
+    $current_version = '669'; // Update this with the new version number
     if ($current_version !== $previous_version) {
         // Save the current version as the previous version
         update_option('profit_tracker_version', $current_version);
