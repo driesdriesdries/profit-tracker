@@ -3,12 +3,13 @@
  * Plugin Name: Vakansie Yes Profit Tracker
  * Plugin URI: http://andriesbester.com/profit-tracker
  * Description: Worst Case Paternoster
- * Version: 666
+ * Version: 667
  * Author: Andries Bester
  * Author URI: http://andriesbester.com
  */
 
- function profit_tracker_register_post_type() {
+// Function to register the custom post type
+function profit_tracker_register_post_type() {
     $labels = array(
         'name'                  => _x('Transactions', 'Post type general name', 'textdomain'),
         'singular_name'         => _x('Transaction', 'Post type singular name', 'textdomain'),
@@ -57,6 +58,7 @@
 }
 add_action('init', 'profit_tracker_register_post_type');
 
+// Function to load single template for transactions
 function profit_tracker_single_template($single_template) {
     global $post;
 
@@ -71,7 +73,7 @@ function profit_tracker_single_template($single_template) {
 }
 add_filter('single_template', 'profit_tracker_single_template');
 
-// New function to filter the archive template
+// Function to load archive template for transactions
 function profit_tracker_archive_template($archive_template) {
     global $post;
 
@@ -86,20 +88,44 @@ function profit_tracker_archive_template($archive_template) {
 }
 add_filter('archive_template', 'profit_tracker_archive_template');
 
+// Function to enqueue styles
 function profit_tracker_enqueue_styles() {
     if (is_singular('transactions') || is_post_type_archive('transactions')) {
         wp_enqueue_style('profit-tracker-style', plugin_dir_url(__FILE__) . 'style.css');
     }
 }
-
 add_action('wp_enqueue_scripts', 'profit_tracker_enqueue_styles');
 
-
-// Additional plugin code...
-
+// Function to enqueue Chart.js
 function enqueue_chartjs() {
     if (is_post_type_archive('transactions')) { // Only on the transactions archive page
         wp_enqueue_script('chartjs', 'https://cdn.jsdelivr.net/npm/chart.js', [], null, true);
     }
 }
 add_action('wp_enqueue_scripts', 'enqueue_chartjs');
+
+// Function to display admin notice for plugin updates
+function profit_tracker_display_update_notice() {
+    // Check if the current user can manage options
+    if (!current_user_can('manage_options')) {
+        return;
+    }
+
+    // Check if the plugin has been updated
+    $previous_version = get_option('profit_tracker_version');
+    $current_version = '666'; // Update this with the new version number
+    if ($current_version !== $previous_version) {
+        // Save the current version as the previous version
+        update_option('profit_tracker_version', $current_version);
+        
+        // Output the admin notice
+        ?>
+        <div class="notice notice-info is-dismissible">
+            <p><?php echo esc_html__('Vakansie Yes Profit Tracker has been updated to version ' . $current_version . '! Check out what\'s new.', 'textdomain'); ?></p>
+        </div>
+        <?php
+    }
+}
+
+// Hook the function to the admin_notices action
+add_action('admin_notices', 'profit_tracker_display_update_notice');
