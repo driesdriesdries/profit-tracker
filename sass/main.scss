@@ -1,0 +1,67 @@
+.transaction-dashboard {
+    padding: 1rem;
+    background-color: crimson;
+    display: flex;
+    justify-content: center;
+
+    .container {
+        display: flex;
+        justify-content: center;
+
+        .left {
+            background-color: white;
+            width: 60%;
+            padding: 1rem;
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 1.3rem;
+                background-color: white;
+                border-radius: 8px;
+
+                th,
+                td {
+                    padding: 1rem;
+                    text-align: left;
+                    text-transform: uppercase; /* Apply uppercase to text */
+                }
+
+                th {
+                    background-color: #f2f2f2;
+                    font-weight: bold;
+                }
+
+                tr:nth-child(even) {
+                    background-color: #f9f9f9;
+                }
+
+                .percentage-increase {
+                    &.positive {
+                        background-color: rgb(188, 255, 188);
+                        color: #2f2f2f;
+                    }
+
+                    &.negative {
+                        background-color: rgb(255, 133, 133);
+                        color: #2f2f2f;
+                    }
+                }
+
+                th:last-child {
+                    text-align: right; /* Right align the last column heading */
+                }
+
+                td:last-child {
+                    text-align: right; /* Right align the last column entries */
+                }
+            }
+        }
+
+        .right {
+            background-color: white;
+            width: 40%;
+            padding: 3rem;
+        }
+    }
+}

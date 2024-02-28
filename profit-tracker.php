@@ -88,11 +88,12 @@ add_filter('archive_template', 'profit_tracker_archive_template');
 
 function profit_tracker_enqueue_styles() {
     if (is_singular('transactions') || is_post_type_archive('transactions')) {
-        wp_enqueue_style('profit-tracker-style', plugin_dir_url(__FILE__) . 'profit-tracker-style.css');
+        wp_enqueue_style('profit-tracker-style', plugin_dir_url(__FILE__) . 'style.css');
     }
 }
 
 add_action('wp_enqueue_scripts', 'profit_tracker_enqueue_styles');
+
 
 // Additional plugin code...
 
