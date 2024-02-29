@@ -130,9 +130,9 @@ function profit_tracker_display_update_notice() {
 // Hook the function to the admin_notices action
 add_action('admin_notices', 'profit_tracker_display_update_notice');
 
-// Luno API credentials
-$api_key = 'dcj945r85e3wd';
-$api_secret = 'QePi-MDWe6slOl5WT2pNEB-xDf7UzM5KKrcyyS6dJAU';
+// Luno API credentials from ACF Options Page
+$api_key = get_field('luno_api_key', 'option'); // Replace 'luno_api_key' with your actual field name if different
+$api_secret = get_field('luno_api_key_copy', 'option'); //
 
 // Luno API endpoint for fetching BTC price in ZAR
 $url = 'https://api.luno.com/api/1/ticker?pair=XBTZAR';
