@@ -18,6 +18,10 @@ $bp-medium:56.25em; //900/16
             background-color: white;
             width: 60%;
             padding: 1rem;
+            h3 {
+                margin-top: 2rem;
+                margin-bottom: 2rem;
+            }
             @media only screen and (max-width:$bp-medium) {
                 width: 100%;
             }

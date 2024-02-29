@@ -129,3 +129,44 @@ function profit_tracker_display_update_notice() {
 
 // Hook the function to the admin_notices action
 add_action('admin_notices', 'profit_tracker_display_update_notice');
+
+// Luno API credentials
+$api_key = 'dcj945r85e3wd';
+$api_secret = 'QePi-MDWe6slOl5WT2pNEB-xDf7UzM5KKrcyyS6dJAU';
+
+// Luno API endpoint for fetching BTC price in ZAR
+$url = 'https://api.luno.com/api/1/ticker?pair=XBTZAR';
+
+// Initialize cURL session
+$ch = curl_init($url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_USERPWD, "$api_key:$api_secret");
+
+// Execute cURL request and store the response
+$response = curl_exec($ch);
+
+// Check for cURL errors
+if ($response === false) {
+    echo 'Error: ' . curl_error($ch);
+} else {
+    // Proceed with handling the API response
+
+    // Close cURL session
+    curl_close($ch);
+
+    // Decode the JSON response
+    $response_data = json_decode($response);
+
+    // Check if the last_trade field exists in the response
+    if (isset($response_data->last_trade)) {
+        // Extract the BTC price from the response
+        $btc_price = $response_data->last_trade;
+
+        // Format the BTC price as South African Rand (ZAR)
+        $formatted_price = number_format($btc_price, 2, '.', ',');
+
+    } else {
+        // Handle error response from the API
+        echo 'Error: Unable to fetch BTC price from Luno API.';
+    }
+}

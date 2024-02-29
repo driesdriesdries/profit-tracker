@@ -56,6 +56,9 @@ $value_on_luno_data_json = json_encode($value_on_luno_data, JSON_NUMERIC_CHECK);
     <div class="transaction-dashboard">
         <div class="container">
             <div class="left">
+                <?php
+                    echo '<h3>Current BTC Price: R' . number_format($btc_price, 2, '.', ',') . '</h3>';
+                ?>
                 <div id="archive-transactions-template-container" class="archive-transactions-template-container">
                     <table>
                         <thead>
