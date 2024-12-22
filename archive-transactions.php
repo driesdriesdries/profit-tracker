@@ -71,8 +71,8 @@ if (have_posts()) : ?>
                 echo '<h4>If we sold all our BTC on Luno right now, we would have ' . number_format($current_holdings_value, 2) . ' ZAR</h4>';
                 
                 // Calculate the value per person
-                $value_per_person = $current_holdings_value / 8;
-                echo '<h4>If divided equally among 8 people, each person would receive ' . number_format($value_per_person, 2) . ' ZAR</h4>';
+                $value_per_person = $current_holdings_value / 10;
+                echo '<h4>If divided equally among 10 people, each person would receive ' . number_format($value_per_person, 2) . ' ZAR</h4>';
             }
             ?>
 
