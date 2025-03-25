@@ -2,8 +2,8 @@
 /**
  * Context Generator Script (Plain Text Version)
  * 
- * Scans for specific PHP files, strips PHP tags, and writes their combined contents 
- * into a plain text file called context.txt.
+ * Scans for specific PHP files, including partials, strips PHP tags,
+ * and writes their combined contents into context.txt.
  */
 
 $targetFiles = [
@@ -11,6 +11,15 @@ $targetFiles = [
     'profit-tracker.php',
     'archive-transactions.php'
 ];
+
+// Dynamically pull all .php files from the partials folder
+$partialsPath = 'partials/';
+if (is_dir($partialsPath)) {
+    $partialFiles = glob($partialsPath . '*.php');
+    foreach ($partialFiles as $partial) {
+        $targetFiles[] = $partial;
+    }
+}
 
 $outputFile = 'context.txt';
 $combinedContent = "Auto-generated Context File (Plain Text)\n";
