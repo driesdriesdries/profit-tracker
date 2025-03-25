@@ -1,36 +1,26 @@
 $bitcoin-orange: #EF8F18;
-$profit-font-size: 2rem;
 
 #profit-tracker {
-    table.table {
-        font-size: $profit-font-size;
+    // Default table styling relies on Bootstrap - no overrides necessary
+    // Clean and minimal
 
-        thead th {
-            background-color: $bitcoin-orange;
-            color: #000;
-            font-size: $profit-font-size;
-            font-weight: normal;
-        }
+    // Optional: if you ever want to target the table for small tweaks
+    // table.table {
+    //     // Bootstrap default styles are applied
+    // }
 
-        tbody tr td {
-            font-size: $profit-font-size;
-            color: inherit;
-        }
-
-        tbody tr td:first-child {
-            font-weight: bold;
-        }
-
-        tbody tr {
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
+    // Spider-Man Image Panel Styling
+    #profit-tracker-image-panel {
+        background-image: url('http://localhost:8888/andries/wp-content/uploads/2025/03/Screenshot-2025-03-25-at-18.31.44.png');
+        background-size: cover;
+        background-position: center;
+        height: 100%;
+        min-height: 100%;
+        border-radius: 0.5rem; // Matches Bootstrap's rounded styling
     }
 
-    // Add Bitcoin Orange borders to all .panel-like blocks
-    .panel,
-    .p-4.bg-light.rounded.shadow,
-    .table-responsive.bg-white.rounded.shadow.p-3 {
-        border: 2px solid $bitcoin-orange;
-        border-radius: 0.5rem;
-    }
+    // Optional - spacing adjustments if needed in future
+    // .panel-btc-stats, .panel-chart {
+    //     margin-bottom: 1rem;
+    // }
 }

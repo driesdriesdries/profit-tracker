@@ -138,11 +138,13 @@ function profit_tracker_archive_template($archive_template) {
 }
 add_filter('archive_template', 'profit_tracker_archive_template', 99);
 
-// Enqueue Bootstrap 5 and plugin styles
+// Enqueue styles with correct order: Bootstrap first, then your plugin styles
 function profit_tracker_enqueue_styles() {
     if (is_singular('transactions') || is_post_type_archive('transactions')) {
-        wp_enqueue_style('profit-tracker-style', plugin_dir_url(__FILE__) . 'style.css');
+        // Load Bootstrap first
         wp_enqueue_style('bootstrap-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css');
+        // Then your styles to ensure your overrides apply
+        wp_enqueue_style('profit-tracker-style', plugin_dir_url(__FILE__) . 'style.css', array('bootstrap-css'));
     }
 }
 add_action('wp_enqueue_scripts', 'profit_tracker_enqueue_styles');
@@ -262,7 +264,7 @@ if (have_posts()) :
     }
 </style>
 
-<div class="container py-5">
+<div id="profit-tracker" class="container py-5">
 
     <div class="mb-5 text-center">
         <h1 class="fw-bold">Vakansie Yes!</h1>
