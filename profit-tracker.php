@@ -8,7 +8,9 @@
  * Author URI: https://github.com/driesdriesdries/profit-tracker
  */
 
-// Function to register the custom post type
+error_log('Vakansie Yes Profit Tracker plugin loaded.');
+
+// Register the custom post type
 function profit_tracker_register_post_type() {
     $labels = array(
         'name'                  => _x('Transactions', 'Post type general name', 'textdomain'),
@@ -30,8 +32,8 @@ function profit_tracker_register_post_type() {
         'remove_featured_image' => _x('Remove cover image', 'Overrides the “Remove featured image” phrase for this post type. Added in 4.3', 'textdomain'),
         'use_featured_image'    => _x('Use as cover image', 'Overrides the “Use as featured image” phrase for this post type. Added in 4.3', 'textdomain'),
         'archives'              => _x('Transaction archives', 'The post type archive label used in nav menus. Default “Post Archives”. Added in 4.4', 'textdomain'),
-        'insert_into_item'      => _x('Insert into transaction', 'Overrides the “Insert into post”/“Insert into page” phrase (used when inserting media into a post). Added in 4.4', 'textdomain'),
-        'uploaded_to_this_item' => _x('Uploaded to this transaction', 'Overrides the “Uploaded to this post”/“Uploaded to this page” phrase (used when viewing media attached to a post). Added in 4.4', 'textdomain'),
+        'insert_into_item'      => _x('Insert into transaction', 'Overrides the “Insert into post”/“Insert into page” phrase (used when inserting media). Added in 4.4', 'textdomain'),
+        'uploaded_to_this_item' => _x('Uploaded to this transaction', 'Overrides the “Uploaded to this post” phrase. Added in 4.4', 'textdomain'),
         'filter_items_list'     => _x('Filter transactions list', 'Screen reader text for the filter links heading on the post type listing screen. Added in 4.4', 'textdomain'),
         'items_list_navigation' => _x('Transactions list navigation', 'Screen reader text for the pagination heading on the post type listing screen. Added in 4.4', 'textdomain'),
         'items_list'            => _x('Transactions list', 'Screen reader text for the items list heading on the post type listing screen. Added in 4.4', 'textdomain'),
@@ -51,122 +53,119 @@ function profit_tracker_register_post_type() {
         'menu_position'      => null,
         'menu_icon'          => 'dashicons-portfolio',
         'supports'           => array('title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments'),
-        'show_in_rest'       => false, // Disable Gutenberg editor support
+        'show_in_rest'       => false,
     );
 
     register_post_type('transactions', $args);
+    error_log('Registered custom post type: transactions');
 }
 add_action('init', 'profit_tracker_register_post_type');
 
-// Function to load single template for transactions
+// Single template override
 function profit_tracker_single_template($single_template) {
     global $post;
-
-    if ($post->post_type == 'transactions') {
+    if ($post->post_type === 'transactions') {
         $plugin_single_template = plugin_dir_path(__FILE__) . 'single-transactions.php';
         if (file_exists($plugin_single_template)) {
+            error_log('Loaded custom single template for transactions.');
             return $plugin_single_template;
         }
     }
-
     return $single_template;
 }
 add_filter('single_template', 'profit_tracker_single_template');
 
-// Function to load archive template for transactions
+// Archive template override
 function profit_tracker_archive_template($archive_template) {
     global $post;
-
     if (is_post_type_archive('transactions')) {
         $plugin_archive_template = plugin_dir_path(__FILE__) . 'archive-transactions.php';
         if (file_exists($plugin_archive_template)) {
+            error_log('Loaded custom archive template for transactions.');
             return $plugin_archive_template;
         }
     }
-
     return $archive_template;
 }
 add_filter('archive_template', 'profit_tracker_archive_template');
 
-// Function to enqueue styles
+// Enqueue styles
 function profit_tracker_enqueue_styles() {
     if (is_singular('transactions') || is_post_type_archive('transactions')) {
         wp_enqueue_style('profit-tracker-style', plugin_dir_url(__FILE__) . 'style.css');
+        error_log('Enqueued profit tracker styles.');
     }
 }
 add_action('wp_enqueue_scripts', 'profit_tracker_enqueue_styles');
 
-// Function to enqueue Chart.js
+// Enqueue Chart.js
 function enqueue_chartjs() {
-    if (is_post_type_archive('transactions')) { // Only on the transactions archive page
+    if (is_post_type_archive('transactions')) {
         wp_enqueue_script('chartjs', 'https://cdn.jsdelivr.net/npm/chart.js', [], null, true);
+        error_log('Chart.js enqueued.');
     }
 }
 add_action('wp_enqueue_scripts', 'enqueue_chartjs');
 
-// Function to display admin notice for plugin updates
+// Admin update notice
 function profit_tracker_display_update_notice() {
-    // Check if the current user can manage options
     if (!current_user_can('manage_options')) {
         return;
     }
-
-    // Check if the plugin has been updated
     $previous_version = get_option('profit_tracker_version');
-    $current_version = '669'; // Update this with the new version number
+    $current_version = '669';
     if ($current_version !== $previous_version) {
-        // Save the current version as the previous version
         update_option('profit_tracker_version', $current_version);
-        
-        // Output the admin notice
         ?>
         <div class="notice notice-info is-dismissible">
             <p><?php echo esc_html__('Vakansie Yes Profit Tracker has been updated to version ' . $current_version . '! Check out what\'s new.', 'textdomain'); ?></p>
         </div>
         <?php
+        error_log('Plugin version updated and notice displayed.');
     }
 }
-
-// Hook the function to the admin_notices action
 add_action('admin_notices', 'profit_tracker_display_update_notice');
 
-// Luno API credentials from ACF Options Page
-$api_key = get_field('luno_api_key', 'option'); // Replace 'luno_api_key' with your actual field name if different
-$api_secret = get_field('luno_api_key_copy', 'option'); //
+// Luno API fetcher with debug
+function fetch_btc_price_from_luno() {
+    $api_key = get_field('luno_api_key', 'option');
+    $api_secret = get_field('luno_api_key_copy', 'option');
+    $url = 'https://api.luno.com/api/1/ticker?pair=XBTZAR';
 
-// Luno API endpoint for fetching BTC price in ZAR
-$url = 'https://api.luno.com/api/1/ticker?pair=XBTZAR';
+    if (!$api_key || !$api_secret) {
+        error_log('Luno API keys missing.');
+        return false;
+    }
 
-// Initialize cURL session
-$ch = curl_init($url);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_USERPWD, "$api_key:$api_secret");
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_USERPWD, "$api_key:$api_secret");
 
-// Execute cURL request and store the response
-$response = curl_exec($ch);
+    $response = curl_exec($ch);
+    if ($response === false) {
+        error_log('Luno API curl error: ' . curl_error($ch));
+        curl_close($ch);
+        return false;
+    }
 
-// Check for cURL errors
-if ($response === false) {
-    echo 'Error: ' . curl_error($ch);
-} else {
-    // Proceed with handling the API response
-
-    // Close cURL session
     curl_close($ch);
-
-    // Decode the JSON response
     $response_data = json_decode($response);
 
-    // Check if the last_trade field exists in the response
     if (isset($response_data->last_trade)) {
-        // Extract the BTC price from the response
-        $btc_price = $response_data->last_trade;
-
-        // Format the BTC price as South African Rand (ZAR)
-        $formatted_price = number_format($btc_price, 2, '.', ',');
-
+        $btc_price = (float) $response_data->last_trade;
+        error_log('BTC price fetched: ' . $btc_price);
+        return $btc_price;
     } else {
-        // Handle error response from the API
-        echo 'Error: Unable to fetch BTC price from Luno API.';
+        error_log('Luno API response invalid or last_trade missing.');
+        return false;
     }
 }
+
+// Make BTC price globally available
+add_action('init', function() {
+    global $btc_price;
+    $btc_price = fetch_btc_price_from_luno();
+    if (!$btc_price) {
+        error_log('BTC price fetch failed or returned empty.');
+    }
+});
