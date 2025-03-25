@@ -6,7 +6,6 @@
  *
  * @package Andries
  */
-error_log('🚀 single-transactions.php template is rendering for post ID ' . get_the_ID());
 get_header();
 
 if (!is_user_logged_in()) {
@@ -14,8 +13,6 @@ if (!is_user_logged_in()) {
     exit;
 }
 
-// Debugging start
-error_log('Entered single-transactions.php template');
 
 // Ensure we are on a single transaction post
 if (have_posts()) :
@@ -27,11 +24,6 @@ if (have_posts()) :
         $date = get_the_date();
         $post_id = get_the_ID();
 
-        // Debugging ACF fields
-        error_log("Transaction Post ID: $post_id");
-        error_log("Rand Invested: $rand_amount_invested");
-        error_log("BTC Owned: $amount_of_btc_owned");
-        error_log("Value on Luno: $value_on_luno");
         ?>
         
         <div class="transactions-template-container">
@@ -66,7 +58,6 @@ if (have_posts()) :
     <?php
     endwhile;
 else :
-    error_log('No transaction posts found.');
     echo '<p>No transaction data available.</p>';
 endif;
 

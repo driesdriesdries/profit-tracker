@@ -1,0 +1,36 @@
+$bitcoin-orange: #EF8F18;
+$profit-font-size: 2rem;
+
+#profit-tracker {
+    table.table {
+        font-size: $profit-font-size;
+
+        thead th {
+            background-color: $bitcoin-orange;
+            color: #000;
+            font-size: $profit-font-size;
+            font-weight: normal;
+        }
+
+        tbody tr td {
+            font-size: $profit-font-size;
+            color: inherit;
+        }
+
+        tbody tr td:first-child {
+            font-weight: bold;
+        }
+
+        tbody tr {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+    }
+
+    // Add Bitcoin Orange borders to all .panel-like blocks
+    .panel,
+    .p-4.bg-light.rounded.shadow,
+    .table-responsive.bg-white.rounded.shadow.p-3 {
+        border: 2px solid $bitcoin-orange;
+        border-radius: 0.5rem;
+    }
+}

@@ -12,12 +12,7 @@ if (!is_user_logged_in()) {
     exit;
 }
 
-error_log('Entered archive-transactions.php template');
-
 global $btc_price;
-if (!$btc_price) {
-    error_log('BTC price not set globally.');
-}
 
 $purchase_dates = [];
 $rand_invested_data = [];
@@ -25,7 +20,6 @@ $value_on_luno_data = [];
 $first_btc_owned_entry = null;
 
 if (have_posts()) :
-    error_log('Transactions posts found, processing loop.');
 
     while (have_posts()) : the_post();
         $purchase_date = get_field('purchase_date');
@@ -35,7 +29,6 @@ if (have_posts()) :
 
         if ($first_btc_owned_entry === null && $amount_of_btc_owned) {
             $first_btc_owned_entry = $amount_of_btc_owned;
-            error_log("First BTC owned entry recorded: $first_btc_owned_entry");
         }
 
         $date_obj = DateTime::createFromFormat('d/m/Y', $purchase_date);
@@ -58,7 +51,7 @@ if (have_posts()) :
     }
 </style>
 
-<div class="container py-5">
+<div id="profit-tracker" class="container py-5">
 
     <div class="mb-5 text-center">
         <h1 class="fw-bold">Vakansie Yes!</h1>
@@ -85,7 +78,6 @@ if (have_posts()) :
 
 <?php
 else :
-    error_log('No transactions found in archive.');
     echo '<div class="container py-5"><p class="alert alert-warning">No transaction data available.</p></div>';
 endif;
 
