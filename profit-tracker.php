@@ -3,7 +3,7 @@
  * Plugin Name: Vakansie Yes Profit Tracker
  * Plugin URI: https://github.com/driesdriesdries/profit-tracker
  * Description: Worst Case Paternoster
- * Version: 69
+ * Version: 70
  * Author: Andries Bester
  * Author URI: https://github.com/driesdriesdries/profit-tracker
  */
@@ -27,16 +27,6 @@ function profit_tracker_register_post_type() {
         'parent_item_colon'     => __('Parent Transactions:', 'textdomain'),
         'not_found'             => __('No transactions found.', 'textdomain'),
         'not_found_in_trash'    => __('No transactions found in Trash.', 'textdomain'),
-        'featured_image'        => _x('Transaction Cover Image', 'Overrides the “Featured Image” phrase for this post type. Added in 4.3', 'textdomain'),
-        'set_featured_image'    => _x('Set cover image', 'Overrides the “Set featured image” phrase for this post type. Added in 4.3', 'textdomain'),
-        'remove_featured_image' => _x('Remove cover image', 'Overrides the “Remove featured image” phrase for this post type. Added in 4.3', 'textdomain'),
-        'use_featured_image'    => _x('Use as cover image', 'Overrides the “Use as featured image” phrase for this post type. Added in 4.3', 'textdomain'),
-        'archives'              => _x('Transaction archives', 'The post type archive label used in nav menus. Default “Post Archives”. Added in 4.4', 'textdomain'),
-        'insert_into_item'      => _x('Insert into transaction', 'Overrides the “Insert into post”/“Insert into page” phrase (used when inserting media). Added in 4.4', 'textdomain'),
-        'uploaded_to_this_item' => _x('Uploaded to this transaction', 'Overrides the “Uploaded to this post” phrase. Added in 4.4', 'textdomain'),
-        'filter_items_list'     => _x('Filter transactions list', 'Screen reader text for the filter links heading on the post type listing screen. Added in 4.4', 'textdomain'),
-        'items_list_navigation' => _x('Transactions list navigation', 'Screen reader text for the pagination heading on the post type listing screen. Added in 4.4', 'textdomain'),
-        'items_list'            => _x('Transactions list', 'Screen reader text for the items list heading on the post type listing screen. Added in 4.4', 'textdomain'),
     );
 
     $args = array(
@@ -61,7 +51,7 @@ function profit_tracker_register_post_type() {
 }
 add_action('init', 'profit_tracker_register_post_type');
 
-// Single template override
+// Template overrides
 function profit_tracker_single_template($single_template) {
     global $post;
     if ($post->post_type === 'transactions') {
@@ -73,11 +63,9 @@ function profit_tracker_single_template($single_template) {
     }
     return $single_template;
 }
-add_filter('single_template', 'profit_tracker_single_template');
+add_filter('single_template', 'profit_tracker_single_template', 99);
 
-// Archive template override
 function profit_tracker_archive_template($archive_template) {
-    global $post;
     if (is_post_type_archive('transactions')) {
         $plugin_archive_template = plugin_dir_path(__FILE__) . 'archive-transactions.php';
         if (file_exists($plugin_archive_template)) {
@@ -87,25 +75,27 @@ function profit_tracker_archive_template($archive_template) {
     }
     return $archive_template;
 }
-add_filter('archive_template', 'profit_tracker_archive_template');
+add_filter('archive_template', 'profit_tracker_archive_template', 99);
 
-// Enqueue styles
+// Enqueue Bootstrap 5 and plugin styles
 function profit_tracker_enqueue_styles() {
     if (is_singular('transactions') || is_post_type_archive('transactions')) {
         wp_enqueue_style('profit-tracker-style', plugin_dir_url(__FILE__) . 'style.css');
-        error_log('Enqueued profit tracker styles.');
+        wp_enqueue_style('bootstrap-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css');
+        error_log('Enqueued profit tracker styles and Bootstrap CSS.');
     }
 }
 add_action('wp_enqueue_scripts', 'profit_tracker_enqueue_styles');
 
-// Enqueue Chart.js
-function enqueue_chartjs() {
+// Enqueue Chart.js and Bootstrap JS
+function profit_tracker_enqueue_scripts() {
     if (is_post_type_archive('transactions')) {
         wp_enqueue_script('chartjs', 'https://cdn.jsdelivr.net/npm/chart.js', [], null, true);
-        error_log('Chart.js enqueued.');
+        wp_enqueue_script('bootstrap-js', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js', [], null, true);
+        error_log('Chart.js and Bootstrap JS enqueued.');
     }
 }
-add_action('wp_enqueue_scripts', 'enqueue_chartjs');
+add_action('wp_enqueue_scripts', 'profit_tracker_enqueue_scripts');
 
 // Admin update notice
 function profit_tracker_display_update_notice() {
@@ -113,12 +103,12 @@ function profit_tracker_display_update_notice() {
         return;
     }
     $previous_version = get_option('profit_tracker_version');
-    $current_version = '669';
+    $current_version = '70';
     if ($current_version !== $previous_version) {
         update_option('profit_tracker_version', $current_version);
         ?>
         <div class="notice notice-info is-dismissible">
-            <p><?php echo esc_html__('Vakansie Yes Profit Tracker has been updated to version ' . $current_version . '! Check out what\'s new.', 'textdomain'); ?></p>
+            <p><?php echo esc_html__('Vakansie Yes Profit Tracker updated to version ' . $current_version . '!', 'textdomain'); ?></p>
         </div>
         <?php
         error_log('Plugin version updated and notice displayed.');
