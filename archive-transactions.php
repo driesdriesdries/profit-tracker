@@ -51,7 +51,20 @@ if (have_posts()) :
     $value_on_luno_data_json = json_encode(array_reverse($value_on_luno_data), JSON_NUMERIC_CHECK);
 ?>
 
+<!-- Google Fonts Ubuntu -->
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
+<style>
+    html, body, * {
+        font-family: 'Ubuntu', sans-serif !important;
+    }
+</style>
+
 <div class="container py-5">
+
+    <!-- Main Heading -->
+    <div class="mb-5 text-center">
+        <h1 class="fw-bold">Vakansie Yes!</h1>
+    </div>
 
     <!-- First Row: BTC Panel and Chart with equal height and centered stats -->
     <div class="row g-4 align-items-stretch">
@@ -59,8 +72,10 @@ if (have_posts()) :
         <div class="col-lg-6">
             <div class="p-4 bg-light rounded shadow h-100 d-flex align-items-center justify-content-center text-center">
                 <div>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/1200px-Bitcoin.svg.png" alt="Bitcoin Logo" class="img-fluid mb-3" style="max-width: 250px; height: auto;">
+
                     <?php if ($btc_price): ?>
-                        <h4 class="text-primary">Current BTC Price: R<?php echo number_format($btc_price, 2, '.', ','); ?></h4>
+                        <h4 style="color: #EF8F18;">Current BTC Price: R<?php echo number_format($btc_price, 2, '.', ','); ?></h4>
                     <?php else: ?>
                         <h4 class="text-danger">BTC price unavailable</h4>
                     <?php endif; ?>
@@ -93,7 +108,7 @@ if (have_posts()) :
         <div class="col-lg-8">
             <div class="table-responsive bg-white rounded shadow p-3">
                 <table class="table table-striped table-hover align-middle">
-                    <thead class="table-dark">
+                    <thead style="background-color: #EF8F18; color: #000;">
                         <tr>
                             <th>Purchase Date</th>
                             <th>Rand Invested</th>
@@ -118,7 +133,7 @@ if (have_posts()) :
                             $formatted_display_date = $date_obj ? $date_obj->format('j F Y') : esc_html($purchase_date);
                         ?>
                             <tr>
-                                <td><a href="<?php echo get_permalink(); ?>"><?php echo $formatted_display_date; ?></a></td>
+                                <td><a href="<?php echo get_permalink(); ?>" style="color: #EF8F18;"><?php echo $formatted_display_date; ?></a></td>
                                 <td>R<?php echo esc_html(number_format($rand_amount_invested, 2)); ?></td>
                                 <td><?php echo esc_html(number_format($amount_of_btc_owned, 8)); ?> BTC</td>
                                 <td>R<?php echo esc_html(number_format($value_on_luno, 2)); ?></td>
@@ -153,13 +168,13 @@ if (have_posts()) :
                 datasets: [{
                     label: 'Rand Amount Invested',
                     data: <?php echo $rand_invested_data_json; ?>,
-                    borderColor: 'blue',
+                    borderColor: '#000000', // Black
                     fill: false,
                     tension: 0.3
                 }, {
                     label: 'Value on Luno',
                     data: <?php echo $value_on_luno_data_json; ?>,
-                    borderColor: 'red',
+                    borderColor: '#EF8F18', // Bitcoin Orange
                     fill: false,
                     tension: 0.3
                 }]
