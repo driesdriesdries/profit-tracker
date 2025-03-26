@@ -264,7 +264,7 @@ if (have_posts()) :
     }
 </style>
 
-<div id="profit-tracker" class="container py-5">
+<div class="container py-5" id="profit-tracker">
 
     <div class="mb-5 text-center">
         <h1 class="fw-bold">Vakansie Yes!</h1>
@@ -278,10 +278,16 @@ if (have_posts()) :
             include plugin_dir_path(__FILE__) . 'partials/panel-chart.php'; </div>
     </div>
 
-    <!-- Full Width Table -->
-    <div class="row g-4 mt-4">
-        <div class="col-12">
+    <!-- Table and Image Panel Row - now 6 / 6 -->
+    <div class="row g-4 mt-4 align-items-stretch">
+        <div class="col-lg-6">
             include plugin_dir_path(__FILE__) . 'partials/panel-table.php'; </div>
+
+        <div class="col-lg-6">
+            <div class="p-4 bg-light rounded shadow" id="profit-tracker-image-panel">
+                <!-- Background image applied via CSS -->
+            </div>
+        </div>
     </div>
 
 </div>

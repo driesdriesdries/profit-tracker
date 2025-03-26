@@ -43,19 +43,38 @@ if (have_posts()) :
     $rand_invested_data_json = json_encode(array_reverse($rand_invested_data), JSON_NUMERIC_CHECK);
     $value_on_luno_data_json = json_encode(array_reverse($value_on_luno_data), JSON_NUMERIC_CHECK);
 ?>
+
 <!-- Google Fonts Ubuntu -->
 <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
 <style>
     html, body, * {
         font-family: 'Ubuntu', sans-serif !important;
     }
+
+    #discreet-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(4px);
+        pointer-events: none;
+        z-index: 10;
+        display: none;
+    }
 </style>
 
-<div class="container py-5" id="profit-tracker">
+<div class="container py-5 position-relative" id="profit-tracker">
 
-    <div class="mb-5 text-center">
-        <h1 class="fw-bold">Vakansie Yes!</h1>
+    <div class="mb-4 text-center">
+        <h1 class="fw-bold">Vakansie Yes! Fund Performance</h1>
+        <button id="toggle-discreet" class="btn btn-outline-secondary">
+            <span id="discreet-icon">&#128065;</span> Toggle Discreet Mode
+        </button>
     </div>
+
+    <div id="discreet-overlay"></div>
 
     <div class="row g-4 align-items-stretch">
         <div class="col-lg-6">
@@ -67,7 +86,6 @@ if (have_posts()) :
         </div>
     </div>
 
-    <!-- Table and Image Panel Row - now 6 / 6 -->
     <div class="row g-4 mt-4 align-items-stretch">
         <div class="col-lg-6">
             <?php include plugin_dir_path(__FILE__) . 'partials/panel-table.php'; ?>
@@ -81,6 +99,20 @@ if (have_posts()) :
     </div>
 
 </div>
+
+<script>
+    document.getElementById('toggle-discreet').addEventListener('click', function () {
+        const overlay = document.getElementById('discreet-overlay');
+        const icon = document.getElementById('discreet-icon');
+        if (overlay.style.display === 'none' || overlay.style.display === '') {
+            overlay.style.display = 'block';
+            icon.textContent = '🙈'; // Change icon to closed eye
+        } else {
+            overlay.style.display = 'none';
+            icon.textContent = '👁️'; // Open eye
+        }
+    });
+</script>
 
 <?php
 else :
