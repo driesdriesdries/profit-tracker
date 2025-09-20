@@ -48,6 +48,7 @@ if (have_posts()) :
     $transaction_count = count($purchase_dates);
     $per_person_current_value = $latest_value > 0 ? $latest_value / 10 : 0;
     $btc_per_person = $btc_holdings > 0 ? $btc_holdings / 10 : 0;
+    $profit_value = $latest_value - $total_invested;
 
     $purchase_dates_json = json_encode(array_reverse($purchase_dates));
     $rand_invested_data_json = json_encode(array_reverse($rand_invested_data), JSON_NUMERIC_CHECK);
@@ -339,7 +340,7 @@ if (have_posts()) :
         <h1 class="fw-bold">Vakansie Yes! Fund Performance</h1>
     </div>
 
-    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4 fintech-overview">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-5 g-4 fintech-overview">
         <div class="col">
             <?php include plugin_dir_path(__FILE__) . 'partials/panel-btc-stats.php'; ?>
         </div>
@@ -359,6 +360,16 @@ if (have_posts()) :
                     <?php echo $growth_percentage >= 0 ? '+' : ''; ?><?php echo number_format($growth_percentage, 2); ?>% vs invested capital
                 </p>
                 <p class="metric-note">Split 10 ways: R<?php echo number_format($per_person_current_value, 2, '.', ','); ?> each</p>
+            </div>
+        </div>
+        <div class="col">
+            <div class="metric-card h-100">
+                <span class="metric-label">Net Profit</span>
+                <p class="metric-value">R<?php echo number_format($profit_value, 2, '.', ','); ?></p>
+                <?php $profit_class = $profit_value >= 0 ? 'positive' : 'negative'; ?>
+                <p class="metric-trend <?php echo $profit_class; ?>">
+                    <?php echo $profit_value >= 0 ? '+' : '-'; ?>R<?php echo number_format(abs($profit_value), 2, '.', ','); ?> vs invested
+                </p>
             </div>
         </div>
         <div class="col">
