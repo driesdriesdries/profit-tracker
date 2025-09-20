@@ -41,7 +41,7 @@
                         <td>
                             <span class="ft-badge <?php echo $badge_class; ?>">
                                 <?php echo $badge_symbol; ?>
-                                <?php echo esc_html(number_format($percentage_increase, 2)); ?>%
+                                <?php echo esc_html(number_format($percentage_increase, 0)); ?>%
                             </span>
                         </td>
                     </tr>
