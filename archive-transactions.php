@@ -340,7 +340,7 @@ if (have_posts()) :
         <h1 class="fw-bold">Vakansie Yes! Fund Performance</h1>
     </div>
 
-    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-5 g-4 fintech-overview">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-6 g-4 fintech-overview">
         <div class="col">
             <?php include plugin_dir_path(__FILE__) . 'partials/panel-btc-stats.php'; ?>
         </div>
@@ -378,6 +378,9 @@ if (have_posts()) :
                 <p class="metric-value"><?php echo number_format($btc_holdings, 6); ?> BTC</p>
                 <p class="metric-note">Split 10 ways: <?php echo number_format($btc_per_person, 8); ?> BTC each</p>
             </div>
+        </div>
+        <div class="col">
+            <?php include plugin_dir_path(__FILE__) . 'partials/panel-btc-converter.php'; ?>
         </div>
     </div>
 
